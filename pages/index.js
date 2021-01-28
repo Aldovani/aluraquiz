@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { useRouter } from 'next/router';
-
 import db from '../db.json';
 import Widget from '../src/components/Widget';
 import QuizLogo from '../src/components/QuizLogo';
