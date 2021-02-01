@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
 import db from '../db.json';
 import Widget from '../src/components/Widget';
 import QuizLogo from '../src/components/QuizLogo';
@@ -11,6 +12,7 @@ import Input from '../src/components/Input';
 import Button from '../src/components/Button';
 // eslint-disable-next-line import/no-named-as-default
 import QuizContainer from '../src/components/QuizContainer';
+import Link from '../src/components/Link';
 
 // const BackgroundImage = styled.div`
 //   background-image: url(${db.bg});
@@ -28,7 +30,17 @@ export default function Home() {
 
       <QuizContainer>
         <QuizLogo />
-        <Widget>
+        <Widget
+          as={motion.section}
+          transition={{ delay: 0, duration: 0.5 }}
+          variants={{
+            show: { opacity: 1, y: '0' },
+            hidden: { opacity: 0, y: '100%' },
+
+          }}
+          initial="hidden"
+          animate="show"
+        >
           <Widget.Header>
             <h1>{db.title}</h1>
           </Widget.Header>
@@ -38,7 +50,7 @@ export default function Home() {
             </p>
             <form onSubmit={(event) => {
               event.preventDefault();
-              router.push(`/quiz?name=${name}`);
+              router.push(`/Quiz/?name=${name}`);
             }}
             >
               <Input
@@ -55,14 +67,53 @@ export default function Home() {
           </Widget.Content>
         </Widget>
 
-        <Widget>
+        <Widget
+          as={motion.section}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          variants={{
+            show: { opacity: 1, y: '0' },
+            hidden: { opacity: 0, y: '100%' },
+
+          }}
+          initial="hidden"
+          animate="show"
+        >
           <Widget.Content>
             <h1>Quizes da Galera</h1>
+            <ul>
 
-            <p>lorem ipsum dolor sit amet...</p>
+              {db.external.map((linkExterno) => {
+                const [projectName, github] = linkExterno
+                  .replace(/\//g, '')
+                  .replace('https:', '')
+                  .replace('.vercel.app', '').split('.');
+
+                return (
+                  <li key={linkExterno}>
+                    <Widget.Topic
+                      as={Link}
+                      href={`/Quiz/${projectName}___${github}`}
+                    >
+                      {`${github}:${projectName}`}
+                    </Widget.Topic>
+                  </li>
+                );
+              })}
+
+            </ul>
           </Widget.Content>
         </Widget>
-        <Footer />
+        <Footer
+          as={motion.footer}
+          transition={{ delay: 1, duration: 0.5 }}
+          variants={{
+            show: { opacity: 1 },
+            hidden: { opacity: 0 },
+
+          }}
+          initial="hidden"
+          animate="show"
+        />
       </QuizContainer>
       <GitHubCorner projectUrl="https://github.com/aldovani" />
     </QuizBackground>
