@@ -58,6 +58,7 @@ function QuestionWidget({
 }) {
   const [selectedAlternative, setSlectedAlternative] = useState(undefined);
   const [isQuestionSubmited, setIsQuestionsSubmited] = useState(false);
+  const [disableInput, setDisableInput] = useState(false);
   const questionId = `question__${QuestionIndex}`;
   const isCorrect = selectedAlternative === questions.answer;
   const hasAlternativeSelected = selectedAlternative !== undefined;
@@ -90,7 +91,9 @@ function QuestionWidget({
         <AlternativesForm onSubmit={(event) => {
           event.preventDefault();
           setIsQuestionsSubmited(true);
+          setDisableInput(true);
           setTimeout(() => {
+            setDisableInput(false);
             addResults(isCorrect);
             onSubmit();
             setIsQuestionsSubmited(false);
@@ -119,6 +122,7 @@ function QuestionWidget({
                   name={questionId}
                   onChange={() => setSlectedAlternative(alternativesIndex)}
                   type="radio"
+                  disabled={disableInput}
                 />
               </Widget.Topic>
             );
