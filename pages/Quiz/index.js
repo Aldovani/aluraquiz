@@ -59,6 +59,7 @@ function QuestionWidget({
   const [selectedAlternative, setSlectedAlternative] = useState(undefined);
   const [isQuestionSubmited, setIsQuestionsSubmited] = useState(false);
   const [disableInput, setDisableInput] = useState(false);
+  const [checado, setChecado] = useState(false);
   const questionId = `question__${QuestionIndex}`;
   const isCorrect = selectedAlternative === questions.answer;
   const hasAlternativeSelected = selectedAlternative !== undefined;
@@ -92,12 +93,14 @@ function QuestionWidget({
           event.preventDefault();
           setIsQuestionsSubmited(true);
           setDisableInput(true);
+          setChecado(true);
           setTimeout(() => {
-            setDisableInput(false);
             addResults(isCorrect);
             onSubmit();
             setIsQuestionsSubmited(false);
             setSlectedAlternative(undefined);
+            setChecado(false);
+            setDisableInput(false);
           }, 3 * 1000);
         }}
         >
@@ -117,6 +120,7 @@ function QuestionWidget({
               >
                 {alternatives}
                 <input
+                  checked={checado}
                   style={{ display: 'none' }}
                   id={alternativesId}
                   name={questionId}
